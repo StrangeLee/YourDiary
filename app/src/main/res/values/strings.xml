@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">YourDiary</string>
+    <string name="diary">Diary</string>
+    <string name="entries">Entries</string>
+    <string name="calendar">Calendar</string>
+    <string name="default_user">User</string>
+    <string name="short_sunday">Sun</string>
+    <string name="short_monday">Mon</string>
+    <string name="short_tuesday">Tue</string>
+    <string name="short_wednesday">Wed</string>
+    <string name="short_thursday">Thu</string>
+    <string name="short_friday">Fri</string>
+    <string name="short_saturday">Sat</string>
+    <string name="emotion_happy">Happy</string>
+    <string name="emotion_sad">Sad</string>
+    <string name="emotion_angry">Angry</string>
+    <string name="emotion_tired">Tired</string>
+    <string name="emotion_soso">Noting Special</string>
+    <string name="add_diary_null_exception">일기의 제목이나 내용을 입력하지 않았습니다.\n일기의 내용을 입력해주세요.</string>
+    <string name="add_diary_complete">일기를 저장하시겠습니까?</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

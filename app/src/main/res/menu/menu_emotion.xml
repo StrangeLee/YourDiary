@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+            android:id="@+id/emotion_happy"
+            android:title="@string/emotion_happy"
+            android:icon="@drawable/icon_happy_emotion" />
+
+    <item
+            android:id="@+id/emotion_sad"
+            android:title="@string/emotion_sad"
+            android:icon="@drawable/icon_sad_emotion"/>
+
+    <item
+            android:id="@+id/emotion_soso"
+            android:title="@string/emotion_soso"
+            android:icon="@drawable/icon_soso_emotion"/>
+
+    <item
+            android:id="@+id/emotion_angry"
+            android:title="@string/emotion_angry"
+            android:icon="@drawable/icon_angry_emotion"/>
+
+    <item
+            android:id="@+id/emotion_tired"
+            android:title="@string/emotion_tired"
+            android:icon="@drawable/icon_tired_emotion"/>
+
+
+</menu>
