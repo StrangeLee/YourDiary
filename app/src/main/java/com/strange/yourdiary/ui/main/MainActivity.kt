@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import com.strange.yourdiary.R
 import com.strange.yourdiary.ui.add.AddActivity
+import com.strange.yourdiary.ui.main.fragment.CalendarFragment
 import com.strange.yourdiary.ui.main.fragment.DiaryListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -32,14 +33,19 @@ class MainActivity : AppCompatActivity() {
         btn_calendar.setOnClickListener {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.main_frame,
+                    CalendarFragment()
+                )
+                .commit()
+        }
+
+        btn_diary.setOnClickListener {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_frame,
                     DiaryListFragment()
                 )
                 .commit()
         }
 
-        btn_calendar.setOnClickListener {
-
-        }
 
         // BottomNavigation
         bnv_diary.setOnNavigationItemSelectedListener {

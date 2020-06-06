@@ -1,17 +1,19 @@
  package com.strange.yourdiary.ui.main.fragment
 
+import android.app.Activity
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
-import com.strange.yourdiary.ui.DetailDialog
+import com.strange.yourdiary.ui.dialog.DetailDialog
 import com.strange.yourdiary.ui.main.DiaryAdapter
-import kotlinx.android.synthetic.main.fragment_diary_list.*
+import kotlinx.android.synthetic.main.fragment_diary_list.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,7 +26,6 @@ import java.util.*
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -33,12 +34,11 @@ import java.util.*
     ): View? {
         // Inflate the layout for this fragment
         var view : View = inflater.inflate(R.layout.fragment_diary_list, container, false)
-
         // 정적 데이터 삽입
         initData()
 
         // 현재 월 textView
-        tv_diary_month.text = SimpleDateFormat("MMM").format(cal.time)
+        view.tv_diary_month.text = SimpleDateFormat("MMM").format(cal.time)
 
         // adapter setting
         diaryAdapter = DiaryAdapter(
@@ -48,14 +48,14 @@ import java.util.*
         )
         diaryAdapter.notifyDataSetChanged()
 
-        rlv_diary.adapter = diaryAdapter
-        rlv_diary.layoutManager = LinearLayoutManager(container!!.context)
-        rlv_diary.setHasFixedSize(true)
+        view.rlv_diary.adapter = diaryAdapter
+        view.rlv_diary.layoutManager = LinearLayoutManager(container!!.context)
+        view.rlv_diary.setHasFixedSize(true)
 
         return view;
     }
 
-     fun initData() {
+     private fun initData() {
          diaryList.add(
              DiaryData(
                  1,
@@ -88,9 +88,18 @@ import java.util.*
          )
      }
 
+//     override fun onAttach(context: Context?) {
+//         super.onAttach(context)
+//     }
+
+     override fun onAttach(activity: Activity?) {
+         super.onAttach(activity)
+     }
+
      // DiaryAdapter 의 OnDiaryClick 의 override 함수를
      override fun onDiaryClick(position: Int) {
-         val dialog = DetailDialog(activity!!.applicationContext)
+         val dialog = DetailDialog(context!!)
          dialog.show()
+         // Todo : 추가하기^^7
      }
 }

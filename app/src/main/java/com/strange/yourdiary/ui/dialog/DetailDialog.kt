@@ -1,4 +1,4 @@
-package com.strange.yourdiary.ui
+package com.strange.yourdiary.ui.dialog
 
 import android.app.Dialog
 import android.content.Context
@@ -13,7 +13,9 @@ class DetailDialog(context: Context) : Dialog(context) {
         setContentView(R.layout.dialog_diary_detail)
 
         tv_dialog_close.setOnClickListener {
-            this.closeOptionsMenu()
+            dismiss()
         }
+
     }
+
 }

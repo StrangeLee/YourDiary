@@ -7,27 +7,96 @@
         tools:context=".ui.main.fragment.CalendarFragment">
 
     <android.support.constraint.ConstraintLayout
+            android:background="@color/colorWhite"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
         <TextView
-                android:id="@+id/textView"
+                android:id="@+id/tv_calendar_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="88dp"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/malgun"
                 android:text="Month"
-                android:fontFamily=""
-                android:textSize="30dp"
+                android:textColor="@color/colorSkyBlue"
+                android:textSize="40sp"
+                app:layout_constraintBottom_toTopOf="@+id/tv_calendar_date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+                android:id="@+id/tv_calendar_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/malgun"
+                android:text="12"
+                android:textColor="@color/colorSkyBlue"
+                android:textSize="70sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/guideline" />
+
+        <TextView
+                android:id="@+id/tv_calendar_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Monday"
+                android:textColor="@color/colorSkyBlue"
+                android:textSize="30sp"
+                app:layout_constraintEnd_toEndOf="@+id/tv_calendar_date"
+                app:layout_constraintStart_toStartOf="@+id/tv_calendar_date"
+                app:layout_constraintTop_toBottomOf="@+id/tv_calendar_date" />
 
         <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintGuide_begin="175dp" />
+                app:layout_constraintGuide_begin="144dp" />
+
+        <View
+                android:id="@+id/view2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorDeepBlue"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_calendar_day"
+                app:layout_constraintVertical_bias="0.039" />
+
+        <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view2">
+
+            <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/binggrae_melona_bold"
+                        android:text="Todo List"
+                        android:padding="5dp"
+                        android:textSize="20sp" />
+
+                <ListView
+                        android:id="@+id/lv_todo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </android.support.constraint.ConstraintLayout>
 

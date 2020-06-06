@@ -4,6 +4,7 @@
         android:background="@drawable/layout_round"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:orientation="horizontal">
 
     <LinearLayout
@@ -64,16 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:paddingRight="20dp">
-
-            <ImageButton
-                    android:id="@+id/btn_emotion"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/icon_happy_emotion"
-                    android:background="@color/colorWhite"/>
-
-        </LinearLayout>
+                android:paddingRight="20dp"/>
 
     </LinearLayout>
 

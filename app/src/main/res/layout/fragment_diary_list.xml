@@ -7,6 +7,7 @@
 
     <LinearLayout
             android:id="@+id/linearLayout2"
+            android:background="@drawable/sky_background2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -19,7 +20,7 @@
                 android:layout_gravity="center"
                 android:paddingBottom="5dp"
                 android:text="Feb."
-                android:textColor="@color/colorDeepBlue"
+                android:textColor="@color/colorWhite"
                 android:textSize="20sp" />
 
         <android.support.v7.widget.RecyclerView
