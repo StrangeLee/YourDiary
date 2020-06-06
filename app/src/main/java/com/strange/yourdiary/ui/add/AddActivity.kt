@@ -19,9 +19,7 @@ import java.util.*
 class AddActivity : AppCompatActivity() {
 
     // Todo : exception handling (Ex - didn't write or choose any widget)
-    private var popupMenu : PopupMenu? = null
     private val calendar = Calendar.getInstance()
-    private var emotion = "happy"
 
     var curDate = calendar.get(Calendar.DATE).toString()
     var curDay = calendar.get(Calendar.DAY_OF_WEEK).toString()
@@ -44,37 +42,6 @@ class AddActivity : AppCompatActivity() {
             showDialog(getString(R.string.add_diary_null_exception))
         } else {
             showDialog(getString(R.string.add_diary_complete))
-        }
-    }
-
-    // Todo : should finish set emotion value
-    // display Popup menu method
-    fun showPopupMenu(view : View) {
-        // PopupMenu setting
-        popupMenu = PopupMenu(this, view)
-        popupMenu!!.inflate(R.menu.menu_emotion)
-        popupMenu!!.setOnMenuItemClickListener {
-            iv_add_emotion.setImageResource(
-                EmotionData(
-                    getString(it!!.itemId)
-                ).getEmotion())
-            emotion = getString(it.itemId)
-
-            return@setOnMenuItemClickListener true
-        }
-
-        // show popup menu
-        try {
-            val popup = PopupMenu::class.java.getDeclaredField("mPopup")
-            popup.isAccessible = true
-            val menu = popup.get(popupMenu)
-            menu.javaClass
-                .getDeclaredMethod("setForceShowIcon", Boolean::class.java)
-                .invoke(menu, true)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        } finally {
-            popupMenu!!.show()
         }
     }
 
