@@ -36,6 +36,18 @@ class CalendarFragment : Fragment() {
             "2학년 애들 타임 어택 시키기"
         ))
 
+        todoAdapter.addItem(TodoData(
+            2,
+            "동아리 준비",
+            "모던패밀리 1S22E 준비하기"
+        ))
+
+        todoAdapter.addItem(TodoData(
+            3,
+            "빨래하기",
+            "기숙사 올라가서 빨래하기"
+        ))
+
         view.lv_todo.adapter = todoAdapter
 
         return view
