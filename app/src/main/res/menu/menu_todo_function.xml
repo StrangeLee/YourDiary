@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/todo_add"
+        android:title="add"
+        android:icon="@drawable/icon_add"
+        android:enabled="true" />
+
+    <item
+        android:id="@+id/todo_delete"
+        android:title="delete"
+        android:icon="@drawable/icon_delete"
+        android:enabled="true" />
+
+    <item
+        android:id="@+id/todo_fix"
+        android:title="fix"
+        android:icon="@drawable/icon_edit"
+        android:enabled="true" />
+
+</menu>

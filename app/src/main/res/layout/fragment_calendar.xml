@@ -12,7 +12,7 @@
             android:background="@color/colorWhite">
 
         <LinearLayout
-                android:id="@+id/linearlayout"
+                android:id="@+id/calendar_box"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:background="@color/colorLightSkyBlue"
@@ -100,13 +100,33 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/binggrae_melona_bold"
-                        android:padding="5dp"
-                        android:text="Todo List"
-                        android:textSize="20sp" />
+                <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <TextView
+                            android:id="@+id/tv_todo1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:fontFamily="@font/binggrae_melona_bold"
+                            android:padding="5dp"
+                            android:text="Todo List"
+                            android:textSize="20sp" />
+
+                    <TextView
+                            android:id="@+id/tv_todo_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:fontFamily="@font/binggrae_melona_bold"
+                            android:padding="5dp"
+                            android:text=">"
+                            android:textStyle="bold"
+                            android:textSize="20sp" />
+
+                </RelativeLayout>
 
                 <ListView
                         android:id="@+id/lv_todo"
