@@ -5,11 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.strange.yourdiary.dao.DiaryDao
+import com.strange.yourdiary.dao.TodoDao
 import com.strange.yourdiary.data.DiaryData
+import com.strange.yourdiary.data.TodoData
 
-@Database(entities = [DiaryData::class], version = 1)
+// database 를 수정한 후에는 version 또한 수정해야함 ㅎㅎ
+@Database(entities = [DiaryData::class, TodoData::class],
+    version = 2)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun diaryDao() : DiaryDao
+    abstract fun todoDao(): TodoDao
 
     companion object {
         private var INSTANCE : AppDatabase? = null
@@ -20,6 +25,7 @@ abstract class AppDatabase : RoomDatabase(){
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             AppDatabase::class.java, "diary.db")
                         .fallbackToDestructiveMigration()
+                        .allowMainThreadQueries()
                         .build()
                 }
             }

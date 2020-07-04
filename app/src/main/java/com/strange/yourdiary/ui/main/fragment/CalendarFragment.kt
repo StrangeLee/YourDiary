@@ -2,25 +2,34 @@ package com.strange.yourdiary.ui.main.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.ContextMenu
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
+import android.view.*
 import android.widget.AdapterView
+import android.widget.TextView
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.TodoData
+import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.event.CalenderSwipeEvent
+import com.strange.yourdiary.ui.dialog.AddTodoDialog
+import com.strange.yourdiary.ui.main.DiaryAdapter
 import com.strange.yourdiary.ui.main.TodoAdapter
 import kotlinx.android.synthetic.main.fragment_calendar.*
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
+import kotlinx.android.synthetic.main.fragment_calendar.view.tv_todo_edit
+import kotlinx.android.synthetic.main.fragment_diary_list.view.*
+
 import kotlinx.android.synthetic.main.lv_todo_list.view.*
 import org.jetbrains.anko.support.v4.toast
+import java.lang.Exception
 
 
 class CalendarFragment : Fragment() {
 
     lateinit var todoAdapter: TodoAdapter
+    private var db : AppDatabase? = null
+    lateinit var todoList : List<TodoData>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,55 +39,78 @@ class CalendarFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        db = AppDatabase.getInstance(context!!)
+
         var view : View = inflater.inflate(R.layout.fragment_calendar, container, false)
 
         // calendar view swipe event
         view.calendar_box.setOnTouchListener(object : CalenderSwipeEvent(context!!){
             override fun onSwipeRight() {
                 super.onSwipeRight()
-                toast("right")
             }
 
             override fun onSwipeLeft() {
                 super.onSwipeLeft()
-                toast("left")
             }
         })
 
-        view.tv_todo_edit.setOnClickListener {
-            toast("Edit!")
+        // To do list 세팅
+        val runnable = Runnable {
+            try {
+                todoList = db?.todoDao()?.getTodoByDate("2020-07-01")!!
+                // adapter setting
+                todoAdapter = TodoAdapter(context!!)
+                activity!!.runOnUiThread {
+                    todoList.forEach {
+                        todoAdapter.addItem(it)
+                        Log.i("TODO", "all " + it.title + " ${it.date}")
+                    }
+                    view.lv_todo.adapter = todoAdapter // adapter setting
+                    Log.d("TODO", "Adapter Count ${todoAdapter.count}")
+                }
+            } catch (e : Exception) {
+                Log.d("DiaryList", "Error - $e")
+            }
         }
 
-        // To do list 세팅
-        todoAdapter = TodoAdapter(context!!)
-        todoAdapter.addItem(TodoData(
-            1,
-            "기능 타임어택",
-            "2학년 애들 타임 어택 시키기"
-        ))
+        val thread = Thread(runnable)
+        thread.start()
+//        todoAdapter.addItem(TodoData(
+//            1,
+//            "기능 타임어택",
+//            "2학년 애들 타임 어택 시키기",
+//            false,
+//            "2020-07-01"
+//        ))
+//
+//        todoAdapter.addItem(TodoData(
+//            2,
+//            "동아리 준비",
+//            "모던패밀리 1S22E 준비하기",
+//            false,
+//            "2020-07-01"
+//        ))
+//
+//        todoAdapter.addItem(TodoData(
+//            3,
+//            "빨래하기",
+//            "기숙사 올라가서 빨래하기",
+//            false,
+//            "2020-07-02"
+//        ))
+//        view.lv_todo.adapter = todoAdapter // adapter setting
 
-        todoAdapter.addItem(TodoData(
-            2,
-            "동아리 준비",
-            "모던패밀리 1S22E 준비하기"
-        ))
 
-        todoAdapter.addItem(TodoData(
-            3,
-            "빨래하기",
-            "기숙사 올라가서 빨래하기"
-        ))
-
-        view.lv_todo.adapter = todoAdapter
+        view.tv_todo_edit.setOnClickListener {
+            val dialog = AddTodoDialog(context!!)
+            dialog.show()
+        }
 
         return view
     }
 
-    override fun onCreateContextMenu(
-        menu: ContextMenu?,
-        v: View?,
-        menuInfo: ContextMenu.ContextMenuInfo?
-    ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
+    override fun onDestroy() {
+        AppDatabase.destroyInstance()
+        super.onDestroy()
     }
 }

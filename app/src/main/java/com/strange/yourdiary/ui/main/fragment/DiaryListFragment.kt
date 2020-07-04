@@ -41,7 +41,7 @@ import java.util.*
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        var view : View = inflater.inflate(R.layout.fragment_diary_list, container, false)
+        val view : View = inflater.inflate(R.layout.fragment_diary_list, container, false)
 
         // get db instance
         db = AppDatabase.getInstance(context!!)
@@ -51,7 +51,7 @@ import java.util.*
 
         // get data form db
 
-        var runnable = Runnable {
+        val runnable = Runnable {
             try {
                 diaryList = db?.diaryDao()?.getAll()!!
                 // adapter setting

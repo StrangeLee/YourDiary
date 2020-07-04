@@ -26,33 +26,19 @@ class TodoAdapter(
         val view : View
         val holder : TodoViewHolder
 
-        if (convertView == null) {
-            view = layoutInflater.inflate(R.layout.lv_todo_list, parent, false)
-        } else {
-            view = convertView
-        }
+        view = convertView ?: layoutInflater.inflate(R.layout.lv_todo_list, parent, false)
 
         holder = TodoViewHolder(view)
         holder.bind(todoList[position])
 
-//        val tv_title = view.findViewById<TextView>(R.id.tv_todo_title)
-//        val tv_content = view.findViewById<TextView>(R.id.tv_todo_content)
-//        val checkBox = view.findViewById<CheckBox>(R.id.cb_todo_list)
-//
-//        tv_title.text = todoList[position].title
-//        tv_content.text = todoList[position].content
-//        checkBox.isSelected = false
-//
+        // checkbox 선택시 event
         holder.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->
-//            mContext.toast("Checkbox is $isChecked")
             if (isChecked) {
                 holder.tv_content.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
                 holder.tv_title.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                Toast.makeText(mContext, "Selected!", Toast.LENGTH_SHORT).show()
             } else {
                 holder.tv_content.paintFlags = 0
                 holder.tv_title.paintFlags = 0
-                Toast.makeText(mContext, "Not Selected!", Toast.LENGTH_SHORT).show()
             }
         }
 
