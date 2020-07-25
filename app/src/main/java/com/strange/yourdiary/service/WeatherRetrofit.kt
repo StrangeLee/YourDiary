@@ -9,6 +9,8 @@ object WeatherRetrofit {
 
     private var userRetrofit: Retrofit? = null
 
+    fun getService(): WeatherService? = getRetrofit()?.create(WeatherService::class.java)
+
     private fun getRetrofit(): Retrofit? {
         if (userRetrofit == null) {
             val interceptor = HttpLoggingInterceptor()
@@ -17,7 +19,7 @@ object WeatherRetrofit {
 
             userRetrofit =
                 Retrofit.Builder()
-                    .baseUrl("")
+                    .baseUrl("http://api.openweathermap.org/data/2.5/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
