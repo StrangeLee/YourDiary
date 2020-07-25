@@ -1,6 +1,7 @@
 package com.strange.yourdiary.ui.main
 
 import android.content.Intent
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
@@ -55,7 +56,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_add -> {
                     var intent = Intent(this, AddActivity::class.java)
                     startActivity(intent)
-                    overridePendingTransition(0, 0) // intent 시 화면전환 효과 없애줌
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+                        overridePendingTransition(0, 0)
+                    } // intent 시 화면전환 효과 없애줌
                     finish()
                 }
             }
