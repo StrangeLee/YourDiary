@@ -4,6 +4,8 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.support.annotation.NonNull
@@ -20,11 +22,12 @@ import com.strange.yourdiary.ui.add.AddActivity
 import com.strange.yourdiary.ui.main.fragment.CalendarFragment
 import com.strange.yourdiary.ui.main.fragment.DiaryListFragment
 import kotlinx.android.synthetic.main.activity_main.*
-
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var fusedLocationClient : FusedLocationProviderClient
+    private lateinit var geoCoder : Geocoder
 
     var REQUIRED_PERMISSIONS = arrayOf(
         Manifest.permission.ACCESS_FINE_LOCATION,
@@ -101,9 +104,23 @@ class MainActivity : AppCompatActivity() {
             // for ActivityCompat#requestPermissions for more details.
             return
         }
+
+        var mAddress : StringBuffer = StringBuffer()
+        geoCoder = Geocoder(this, Locale.KOREA)
+
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
-                Log.d("TEST", "${location!!.latitude}, ${location.longitude}")
+                val addresses = geoCoder.getFromLocation(location!!.latitude, location.longitude, 1)
+                for (addr: Address in addresses) {
+                    val index = addr.maxAddressLineIndex
+                    for(i : Int in arrayOf(index)){
+                        mAddress.append(addr.getAddressLine(i));
+                        mAddress.append(" ");
+                    }
+                    mAddress.append("\n");
+                }
+
+                Log.d("TEST", mAddress.toString())
             }
             .addOnFailureListener {exception: Exception ->
                 exception.printStackTrace()
@@ -111,8 +128,7 @@ class MainActivity : AppCompatActivity() {
             }
     }
 
-    fun checkRunTimePermission() {
-
+    private fun checkRunTimePermission() {
         //런타임 퍼미션 처리
         // 1. 위치 퍼미션을 가지고 있는지 체크합니다.
         val hasFineLocationPermission = ContextCompat.checkSelfPermission(
