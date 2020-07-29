@@ -1,14 +1,12 @@
-package com.strange.yourdiary.ui.main
+package com.strange.yourdiary.view.activity
 
 import android.Manifest
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
-import android.support.annotation.NonNull
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -18,9 +16,8 @@ import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.strange.yourdiary.R
-import com.strange.yourdiary.ui.add.AddActivity
-import com.strange.yourdiary.ui.main.fragment.CalendarFragment
-import com.strange.yourdiary.ui.main.fragment.DiaryListFragment
+import com.strange.yourdiary.view.fragment.CalendarFragment
+import com.strange.yourdiary.view.fragment.DiaryListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 

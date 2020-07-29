@@ -1,19 +1,14 @@
-package com.strange.yourdiary.ui.main
+package com.strange.yourdiary.widget.listview
 
 import android.content.Context
 import android.graphics.Paint
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import com.strange.yourdiary.R
-import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.data.TodoData
-import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import kotlinx.android.synthetic.main.lv_todo_list.view.*
-import kotlinx.android.synthetic.main.rlv_diary_list.view.*
-import org.jetbrains.anko.toast
 
 class TodoAdapter(
     private val mContext: Context

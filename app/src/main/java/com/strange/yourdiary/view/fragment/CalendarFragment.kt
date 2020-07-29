@@ -1,27 +1,19 @@
-package com.strange.yourdiary.ui.main.fragment
+package com.strange.yourdiary.view.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.*
-import android.widget.AdapterView
-import android.widget.TextView
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.TodoData
 import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.event.CalenderSwipeEvent
-import com.strange.yourdiary.ui.dialog.AddTodoDialog
-import com.strange.yourdiary.ui.main.DiaryAdapter
-import com.strange.yourdiary.ui.main.TodoAdapter
-import kotlinx.android.synthetic.main.fragment_calendar.*
+import com.strange.yourdiary.widget.dialog.AddTodoDialog
+import com.strange.yourdiary.widget.listview.TodoAdapter
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.view.tv_todo_edit
-import kotlinx.android.synthetic.main.fragment_diary_list.view.*
 
-import kotlinx.android.synthetic.main.lv_todo_list.view.*
-import org.jetbrains.anko.support.v4.toast
 import java.lang.Exception
 
 
@@ -59,7 +51,8 @@ class CalendarFragment : Fragment() {
             try {
                 todoList = db?.todoDao()?.getTodoByDate("2020-07-01")!!
                 // adapter setting
-                todoAdapter = TodoAdapter(context!!)
+                todoAdapter =
+                    TodoAdapter(context!!)
                 activity!!.runOnUiThread {
                     todoList.forEach {
                         todoAdapter.addItem(it)

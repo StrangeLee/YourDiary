@@ -1,14 +1,12 @@
-package com.strange.yourdiary.ui.dialog
+package com.strange.yourdiary.widget.dialog
 
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import com.strange.yourdiary.R
-import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.data.TodoData
 import com.strange.yourdiary.db.AppDatabase
-import kotlinx.android.synthetic.main.dialog_diary_detail.*
 import kotlinx.android.synthetic.main.dialog_todo_edit.*
 import org.jetbrains.anko.toast
 import java.lang.Exception

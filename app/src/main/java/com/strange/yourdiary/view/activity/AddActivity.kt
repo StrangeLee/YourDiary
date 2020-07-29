@@ -1,4 +1,4 @@
-package com.strange.yourdiary.ui.add
+package com.strange.yourdiary.view.activity
 
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
@@ -7,14 +7,10 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.view.ContextThemeWrapper
 import android.text.TextUtils
 import android.view.View
-import android.widget.PopupMenu
-import com.strange.yourdiary.data.EmotionData
-import com.strange.yourdiary.ui.main.MainActivity
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.db.AppDatabase
 import kotlinx.android.synthetic.main.activity_add.*
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 

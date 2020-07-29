@@ -1,4 +1,4 @@
-package com.strange.yourdiary.ui.dialog
+package com.strange.yourdiary.widget.dialog
 
 import android.app.Dialog
 import android.content.Context

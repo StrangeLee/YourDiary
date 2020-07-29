@@ -1,4 +1,4 @@
-package com.strange.yourdiary.ui.main
+package com.strange.yourdiary.widget.recyclerview.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView

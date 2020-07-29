@@ -1,21 +1,18 @@
- package com.strange.yourdiary.ui.main.fragment
+ package com.strange.yourdiary.view.fragment
 
-import android.app.Activity
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.db.AppDatabase
-import com.strange.yourdiary.ui.dialog.DetailDialog
-import com.strange.yourdiary.ui.main.DiaryAdapter
+import com.strange.yourdiary.widget.dialog.DetailDialog
+import com.strange.yourdiary.widget.recyclerview.adapter.DiaryAdapter
 import kotlinx.android.synthetic.main.fragment_diary_list.view.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
@@ -56,11 +53,12 @@ import java.util.*
                 diaryList = db?.diaryDao()?.getAll()!!
                 // adapter setting
                 activity!!.runOnUiThread {
-                    diaryAdapter = DiaryAdapter(
-                        context = context!!,
-                        diarys = diaryList,
-                        onDiaryListener = this
-                    )
+                    diaryAdapter =
+                        DiaryAdapter(
+                            context = context!!,
+                            diarys = diaryList,
+                            onDiaryListener = this
+                        )
 
                     diaryAdapter.notifyDataSetChanged()
                     view.rlv_diary.adapter = diaryAdapter
