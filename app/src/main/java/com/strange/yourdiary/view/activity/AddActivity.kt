@@ -97,6 +97,7 @@ class AddActivity : AppCompatActivity() {
         }
     }
 
+    // 2020-07-29 Todo : location 주소 split 해서 넣기
     private fun showDialog(message: String) {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this,
             R.style.Theme_AppCompat_Dialog
