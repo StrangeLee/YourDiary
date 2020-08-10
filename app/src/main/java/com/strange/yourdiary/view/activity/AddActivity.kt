@@ -38,6 +38,8 @@ class AddActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var geoCoder : Geocoder
 
+    private lateinit var nowLocation: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add)
@@ -62,26 +64,40 @@ class AddActivity : AppCompatActivity() {
             return
         }
 
-        var mAddress : StringBuffer = StringBuffer()
+        val mAddress : StringBuffer = StringBuffer()
         geoCoder = Geocoder(this, Locale.KOREA)
 
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 val addresses = geoCoder.getFromLocation(location!!.latitude, location.longitude, 1)
+                /**
+                 * Address class 변수 정리 (필요한 것들만 정리함)
+                 * adminArea : 지역, 시 이름 ..ex) 대구광역시
+                 * thoroughfare : 상세 주소 ..ex) 평리3동
+                 * postalCode : 우편주소(미국식 으로 기제된 듯 하다. 한국식으로 변환 하는 방법은 찾아야할듯) ..ex) 703-013
+                 * countryCode : 나라 코드 ..ex) KR, UK etc...
+                 * countryName : 나라 이름 ..ex) 대한민국
+                 * locality : 일반 집주소나 회사 주소같은 경우는 null로 뜨는 듯 하다. 아마 산지 인지 바다 인지 등을 나타내는 거 같은데 확인 필요.
+                 */
                 for (addr: Address in addresses) {
                     val index = addr.maxAddressLineIndex
                     for(i : Int in arrayOf(index)){
-                        mAddress.append(addr.getAddressLine(i));
-                        mAddress.append(" ");
+                        mAddress.append(addr.getAddressLine(i))
+                        mAddress.append(" ")
                     }
-                    mAddress.append("\n");
+                    mAddress.append("\n")
+
+                    nowLocation = "${addr.countryName}  ${addr.adminArea} ${addr.thoroughfare}"
+
+                    Log.d("Test", addr.toString())
                 }
 
-                Log.d("TEST", mAddress.toString())
             }
             .addOnFailureListener {exception: Exception ->
                 exception.printStackTrace()
-                Log.e("TEST", exception.message)
+                // 2020/08/11 Todo : 오류 발생시 다이얼로그 뛰우기 or toast
+                nowLocation = "주소를 가져오지 못했습니다."
+                Log.e("Error", exception.message)
             }
     }
 
@@ -109,7 +125,7 @@ class AddActivity : AppCompatActivity() {
                 title = edit_add_title.text.toString(),
                 content = edit_add_content.text.toString(),
                 weather = "맑음",
-                location = "대구 광역시",
+                location = nowLocation,
                 uploadDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.time)
             )
 
@@ -149,3 +165,4 @@ class AddActivity : AppCompatActivity() {
         super.onDestroy()
     }
 }
+
