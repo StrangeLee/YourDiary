@@ -13,13 +13,14 @@ import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.widget.dialog.DetailDialog
 import com.strange.yourdiary.widget.recyclerview.adapter.DiaryAdapter
+import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
 import kotlinx.android.synthetic.main.fragment_diary_list.view.*
 import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
  class DiaryListFragment : Fragment(),
-     DiaryAdapter.OnDiaryListener {
+     OnDiaryListener {
 
      private var diaryList = listOf<DiaryData>()
      lateinit var diaryAdapter : DiaryAdapter
@@ -78,7 +79,8 @@ import java.util.*
 
      // DiaryAdapter 의 OnDiaryClick 의 override 함수를
      override fun onDiaryClick(position: Int) {
-         val dialog = DetailDialog(context!!)
+         val dialog = DetailDialog(context!!, diaryList[position])
+         Log.d("Data", diaryList[position].content)
          dialog.show()
          // Todo : 추가하기^^7
      }

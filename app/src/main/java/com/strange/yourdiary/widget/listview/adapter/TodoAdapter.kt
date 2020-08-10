@@ -1,4 +1,4 @@
-package com.strange.yourdiary.widget.listview
+package com.strange.yourdiary.widget.listview.adapter
 
 import android.content.Context
 import android.graphics.Paint
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.*
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.TodoData
+import com.strange.yourdiary.widget.listview.holder.TodoViewHolder
 import kotlinx.android.synthetic.main.lv_todo_list.view.*
 
 class TodoAdapter(
@@ -55,19 +56,6 @@ class TodoAdapter(
     fun addItem(todo : TodoData) {
         todoList.add(todo)
     }
-
-    inner class TodoViewHolder(view: View?) {
-        var tv_title = view!!.tv_todo_title
-        var tv_content = view!!.tv_todo_content
-        var checkBox = view!!.cb_todo_list
-
-        fun bind(todo: TodoData) {
-            tv_title?.text = todo.title
-            tv_content?.text = todo.content
-            checkBox?.isSelected = todo.checked
-        }
-    }
-
 
 }
 

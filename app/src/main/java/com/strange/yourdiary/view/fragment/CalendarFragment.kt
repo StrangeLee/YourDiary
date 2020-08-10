@@ -10,7 +10,7 @@ import com.strange.yourdiary.data.TodoData
 import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.event.CalenderSwipeEvent
 import com.strange.yourdiary.widget.dialog.AddTodoDialog
-import com.strange.yourdiary.widget.listview.TodoAdapter
+import com.strange.yourdiary.widget.listview.adapter.TodoAdapter
 import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.view.tv_todo_edit
 
@@ -52,7 +52,9 @@ class CalendarFragment : Fragment() {
                 todoList = db?.todoDao()?.getTodoByDate("2020-07-01")!!
                 // adapter setting
                 todoAdapter =
-                    TodoAdapter(context!!)
+                    TodoAdapter(
+                        context!!
+                    )
                 activity!!.runOnUiThread {
                     todoList.forEach {
                         todoAdapter.addItem(it)
