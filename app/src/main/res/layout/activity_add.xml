@@ -1,75 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.activity.AddActivity">
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_add"
+    <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/design_default_color_primary"
-            app:contentInsetStart="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            tools:context=".view.activity.AddActivity">
 
-        <LinearLayout
-                android:gravity="end"
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar_add"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@color/design_default_color_primary"
+                app:contentInsetStart="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <Button
-                    android:id="@+id/btn_diary_write"
-                    android:text="기록"
-                    android:onClick="writeDiary"
-                    android:background="@drawable/layout_round"
-                    android:layout_marginEnd="5dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="35dp"/>
+            <LinearLayout
+                    android:gravity="end"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-        </LinearLayout>
+                <Button
+                        android:id="@+id/btn_diary_write"
+                        android:text="기록"
+                        android:onClick="beforeSaveDiary"
+                        android:background="@drawable/layout_round"
+                        android:layout_marginEnd="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="35dp"/>
 
-    </android.support.v7.widget.Toolbar>
+            </LinearLayout>
 
-    <TextView
-            android:id="@+id/tv_add_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="yyyy년 MM월 dd일 ddd"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@null"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar_add"/>
+        </android.support.v7.widget.Toolbar>
 
-    <EditText
-            android:id="@+id/edit_add_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:hint="제목"
-            android:layout_marginTop="10dp"
-            android:layout_marginStart="10dp"
-            android:background="@null"
-            android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_add_date" />
+        <TextView
+                android:id="@+id/tv_add_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="yyyy년 MM월 dd일 ddd"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@null"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar_add"/>
 
-    <EditText
-            android:id="@+id/edit_add_content"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:layout_margin="10dp"
-            android:hint="오늘 하루는 어땠나요?"
-            android:gravity="left"
-            android:textSize="15sp"
-            android:inputType="textMultiLine"
-            android:background="@null"
-            app:layout_constraintTop_toBottomOf="@id/edit_add_title"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"/>
+        <EditText
+                android:id="@+id/edit_add_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:hint="제목"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:background="@null"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_add_date" />
 
-</android.support.constraint.ConstraintLayout>
+        <EditText
+                android:id="@+id/edit_add_content"
+                android:layout_width="match_parent"
+                android:layout_height="400dp"
+                android:layout_margin="10dp"
+                android:hint="오늘 하루는 어땠나요?"
+                android:gravity="start"
+                android:textSize="15sp"
+                android:inputType="textMultiLine"
+                android:background="@null"
+                app:layout_constraintTop_toBottomOf="@id/edit_add_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

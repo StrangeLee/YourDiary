@@ -82,7 +82,6 @@ import java.util.*
          val dialog = DetailDialog(context!!, diaryList[position])
          Log.d("Data", diaryList[position].content)
          dialog.show()
-         // Todo : 추가하기^^7
      }
 
      override fun onDestroy() {

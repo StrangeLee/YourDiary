@@ -3,6 +3,7 @@ package com.strange.yourdiary.view.activity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
@@ -16,16 +17,26 @@ import android.util.Log
 import android.view.View
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.JsonObject
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
+import com.strange.yourdiary.databinding.ActivityAddBinding
+import com.strange.yourdiary.databinding.DialogDiaryDetailBinding
 import com.strange.yourdiary.db.AppDatabase
+import com.strange.yourdiary.service.WeatherRetrofit
 import kotlinx.android.synthetic.main.activity_add.*
+import kotlinx.android.synthetic.main.activity_add.view.*
+import org.jetbrains.anko.toast
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddActivity : AppCompatActivity() {
 
-    // Todo : exception handling (Ex - didn't write or choose any widget)
+    private lateinit var binding: ActivityAddBinding
+
     private val calendar = Calendar.getInstance()
 
     private var db : AppDatabase? = null
@@ -38,22 +49,90 @@ class AddActivity : AppCompatActivity() {
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var geoCoder : Geocoder
 
-    private lateinit var nowLocation: String
+    private lateinit var nowLocationString: String
+    private lateinit var mLocation : Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_add)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add)
         setSupportActionBar(toolbar_add)
 
         // db instance 생성 및 insert
         db = AppDatabase.getInstance(this)
 
-        tv_add_date.text = SimpleDateFormat("yyyy년 MM월 dd일 E").format(calendar.time).toString()
+        binding.root.tv_add_date.text = SimpleDateFormat("yyyy년 MM월 dd일 E").format(calendar.time).toString()
 
-        // 위치 체크
         // get gps location
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        if (ActivityCompat.checkSelfPermission(
+    }
+
+    // 2020/08/11 Todo : finish write diary's content
+    fun beforeSaveDiary(view : View) {
+        val diaryTitle = edit_add_title.text
+        val diaryContent = edit_add_content.text
+
+        if (TextUtils.isEmpty(diaryTitle) || diaryContent == null) {
+            showDialog(getString(R.string.add_diary_null_exception))
+        } else {
+            showDialog(getString(R.string.add_diary_complete))
+        }
+    }
+
+    // 일기 저장을 눌렀을 때 예외 처리후 보여주는 다이얼로그
+    private fun showDialog(message: String) {
+        val builder = AlertDialog.Builder(ContextThemeWrapper(this,
+            R.style.Theme_AppCompat_Dialog
+        ))
+
+        if (message == getString(R.string.add_diary_null_exception)) {
+            builder.run {
+                setTitle("일기 저장")
+                    .setMessage(message)
+                    .setPositiveButton("확인") {_, _ ->  }
+                    .show()
+            }
+        } else {
+            builder.run {
+                setTitle("일기 저장")
+                    .setMessage(message)
+                    .setPositiveButton("확인") { _, _ ->
+
+                        val thread = Thread(saveDiary())
+                        thread.start()
+
+                        val intent = Intent(this@AddActivity, MainActivity::class.java)
+                        startActivity(intent)
+                        overridePendingTransition(0, 0)
+                        finish()
+                    }
+                    .setNegativeButton("취소") { _, _ ->
+                    }
+                    .show()
+            }
+        }
+    }
+
+    // room db 에 Diary 객체 저장
+    private fun saveDiary() : Runnable {
+        getCurrentLocation()
+
+        return Runnable {
+            val diary = DiaryData(
+                id = 0,
+                title = edit_add_title.text.toString(),
+                content = edit_add_content.text.toString(),
+                weather = "맑음",
+                location = nowLocationString,
+                uploadDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.time)
+            )
+
+            db?.diaryDao()?.insert(diary)
+        }
+    }
+
+    // 현재위치 가져오기
+    private fun getCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission( // 위치 권한 체크
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -64,12 +143,13 @@ class AddActivity : AppCompatActivity() {
             return
         }
 
-        val mAddress : StringBuffer = StringBuffer()
+        val mAddress = StringBuffer()
         geoCoder = Geocoder(this, Locale.KOREA)
 
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 val addresses = geoCoder.getFromLocation(location!!.latitude, location.longitude, 1)
+                mLocation = location
                 /**
                  * Address class 변수 정리 (필요한 것들만 정리함)
                  * adminArea : 지역, 시 이름 ..ex) 대구광역시
@@ -87,82 +167,47 @@ class AddActivity : AppCompatActivity() {
                     }
                     mAddress.append("\n")
 
-                    nowLocation = "${addr.countryName}  ${addr.adminArea} ${addr.thoroughfare}"
+                    nowLocationString = "${addr.countryName}  ${addr.adminArea} ${addr.thoroughfare}"
 
                     Log.d("Test", addr.toString())
                 }
 
+                getWeatherFromApi()
             }
             .addOnFailureListener {exception: Exception ->
                 exception.printStackTrace()
                 // 2020/08/11 Todo : 오류 발생시 다이얼로그 뛰우기 or toast
-                nowLocation = "주소를 가져오지 못했습니다."
+                nowLocationString = "주소를 가져오지 못했습니다."
                 Log.e("Error", exception.message)
             }
+
     }
 
-    // finish write diary's content
-    fun writeDiary(view : View) {
-        val diaryTitle = edit_add_title.text
-        val diaryContent = edit_add_content.text
+    private fun getWeatherFromApi() {
+        val response = WeatherRetrofit.getService()!!.getCurrentWeather(
+            mLocation.latitude.toString(),
+            mLocation.longitude.toString(),
+            "4fee01e748ecda78c741ad4d607fec49"
+        )
 
-        if (TextUtils.isEmpty(diaryTitle) || diaryContent == null) {
-            showDialog(getString(R.string.add_diary_null_exception))
-        } else {
-            showDialog(getString(R.string.add_diary_complete))
-        }
-    }
-
-    // 2020-07-29 Todo : location 주소 split 해서 넣기
-    private fun showDialog(message: String) {
-        val builder = AlertDialog.Builder(ContextThemeWrapper(this,
-            R.style.Theme_AppCompat_Dialog
-        ))
-
-        val addRunnable = Runnable {
-            val diary = DiaryData(
-                id = 0,
-                title = edit_add_title.text.toString(),
-                content = edit_add_content.text.toString(),
-                weather = "맑음",
-                location = nowLocation,
-                uploadDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.time)
-            )
-
-            db?.diaryDao()?.insert(diary)
-        }
-
-        if (message == getString(R.string.add_diary_null_exception)) {
-            builder.run {
-                setTitle("일기 저장")
-                    .setMessage(message)
-                    .setPositiveButton("확인") {_, _ ->  }
-                    .show()
+        response.enqueue(object: Callback<JsonObject>{
+            override fun onFailure(call: Call<JsonObject>, t: Throwable) {
+                Log.e("Error", t.message)
             }
-        } else {
-            builder.run {
-                setTitle("일기 저장")
-                    .setMessage(message)
-                    .setPositiveButton("확인") { _, _ ->
 
-                        val thread = Thread(addRunnable)
-                        thread.start()
-
-                        val intent = Intent(this@AddActivity, MainActivity::class.java)
-                        startActivity(intent)
-                        overridePendingTransition(0, 0)
-                        finish()
-                    }
-                    .setNegativeButton("취소") { _, _ ->
-                    }
-                    .show()
+            override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
+                Log.d("Weather", response.body().toString())
+                toast(response.body().toString())
             }
-        }
+
+        })
     }
 
     override fun onDestroy() {
         AppDatabase.destroyInstance()
         super.onDestroy()
     }
+
 }
+
 
