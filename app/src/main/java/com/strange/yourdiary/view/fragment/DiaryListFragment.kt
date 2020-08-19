@@ -35,9 +35,6 @@ import java.util.*
      var cal = Calendar.getInstance()
      lateinit var thread : Thread
 
-     // room db 생성
-     private var db : AppDatabase? = null
-
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -49,7 +46,7 @@ import java.util.*
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false)
         diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
-        diaryViewModel.getAll().observe(this, Observer<List<DiaryData>> {
+        diaryViewModel.getAll().observe(this, Observer {
             diaryAdapter =
                 DiaryAdapter(
                     context = context!!,
@@ -59,8 +56,7 @@ import java.util.*
 
             diaryAdapter.notifyDataSetChanged()
             binding.root.rlv_diary.adapter = diaryAdapter
-            binding.root.rlv_diary.layoutManager =
-                androidx.recyclerview.widget.LinearLayoutManager(container!!.context)
+            binding.root.rlv_diary.layoutManager = LinearLayoutManager(container!!.context)
             binding.root.rlv_diary.setHasFixedSize(true)
         })
 
