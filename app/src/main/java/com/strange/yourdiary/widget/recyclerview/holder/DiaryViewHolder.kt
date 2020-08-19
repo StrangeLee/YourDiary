@@ -1,12 +1,12 @@
 package com.strange.yourdiary.widget.recyclerview.holder
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.View
 import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
 import kotlinx.android.synthetic.main.rlv_diary_list.view.*
 
-class DiaryViewHolder(view: View?) : RecyclerView.ViewHolder(view!!), View.OnClickListener {
+class DiaryViewHolder(view: View?) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view!!), View.OnClickListener {
 
     private var tvDate = itemView.tv_diary_date
     private var tvDay = itemView.tv_diary_day

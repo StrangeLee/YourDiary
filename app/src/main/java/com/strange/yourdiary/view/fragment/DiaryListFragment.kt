@@ -1,16 +1,22 @@
  package com.strange.yourdiary.view.fragment
 
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v7.widget.LinearLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
+import com.strange.yourdiary.databinding.FragmentDiaryListBinding
 import com.strange.yourdiary.db.AppDatabase
+import com.strange.yourdiary.viewmodel.DiaryViewModel
 import com.strange.yourdiary.widget.dialog.DetailDialog
 import com.strange.yourdiary.widget.recyclerview.adapter.DiaryAdapter
 import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
@@ -19,8 +25,10 @@ import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
- class DiaryListFragment : Fragment(),
-     OnDiaryListener {
+ class DiaryListFragment : androidx.fragment.app.Fragment(), OnDiaryListener {
+
+     private lateinit var binding : FragmentDiaryListBinding
+     private lateinit var diaryViewModel : DiaryViewModel
 
      private var diaryList = listOf<DiaryData>()
      lateinit var diaryAdapter : DiaryAdapter
@@ -38,43 +46,25 @@ import java.util.*
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        val view : View = inflater.inflate(R.layout.fragment_diary_list, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_diary_list, container, false)
+        diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
-        // get db instance
-        db = AppDatabase.getInstance(context!!)
+        diaryViewModel.getAll().observe(this, Observer<List<DiaryData>> {
+            diaryAdapter =
+                DiaryAdapter(
+                    context = context!!,
+                    diarys = diaryList,
+                    onDiaryListener = this
+                )
 
-        // 현재 월 textView
-        view.tv_diary_month.text = SimpleDateFormat("MMM").format(cal.time)
+            diaryAdapter.notifyDataSetChanged()
+            binding.root.rlv_diary.adapter = diaryAdapter
+            binding.root.rlv_diary.layoutManager =
+                androidx.recyclerview.widget.LinearLayoutManager(container!!.context)
+            binding.root.rlv_diary.setHasFixedSize(true)
+        })
 
-        // get data form db
-
-        val runnable = Runnable {
-            try {
-                diaryList = db?.diaryDao()?.getAll()!!
-                // adapter setting
-                activity!!.runOnUiThread {
-                    diaryAdapter =
-                        DiaryAdapter(
-                            context = context!!,
-                            diarys = diaryList,
-                            onDiaryListener = this
-                        )
-
-                    diaryAdapter.notifyDataSetChanged()
-                    view.rlv_diary.adapter = diaryAdapter
-                    view.rlv_diary.layoutManager = LinearLayoutManager(container!!.context)
-                    view.rlv_diary.setHasFixedSize(true)
-                }
-            } catch (e : Exception) {
-                Log.d("DiaryList", "Error - $e")
-            }
-        }
-
-        thread = Thread(runnable)
-        thread.start()
-
-        return view;
+        return binding.root
     }
 
      // DiaryAdapter 의 OnDiaryClick 의 override 함수를

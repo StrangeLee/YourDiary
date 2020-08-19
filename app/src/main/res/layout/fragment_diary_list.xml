@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.fragment.DiaryListFragment">
+<layout
+        tools:context=".view.fragment.DiaryListFragment"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:background="@drawable/sky_background2"
+    <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="15dp">
+            android:layout_height="match_parent">
 
-        <TextView
-                android:id="@+id/tv_diary_month"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:paddingBottom="5dp"
-                android:text="Feb."
-                android:textColor="@color/colorWhite"
-                android:textSize="20sp" />
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/rlv_diary"
+        <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:background="@drawable/sky_background2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/rlv_diary_list" />
+                android:orientation="vertical"
+                android:padding="15dp">
 
-    </LinearLayout>
+            <TextView
+                    android:id="@+id/tv_diary_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingBottom="5dp"
+                    android:text="Feb."
+                    android:textColor="@color/colorWhite"
+                    android:textSize="20sp" />
 
-</FrameLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rlv_diary"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/rlv_diary_list" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

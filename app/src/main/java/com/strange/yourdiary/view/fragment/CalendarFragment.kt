@@ -1,7 +1,7 @@
 package com.strange.yourdiary.view.fragment
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.*
 
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.tv_todo_edit
 import java.lang.Exception
 
 
-class CalendarFragment : Fragment() {
+class CalendarFragment : androidx.fragment.app.Fragment() {
 
     lateinit var todoAdapter: TodoAdapter
     private var db : AppDatabase? = null
