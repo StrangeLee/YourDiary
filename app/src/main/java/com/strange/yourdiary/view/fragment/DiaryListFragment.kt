@@ -50,13 +50,13 @@ import java.util.*
             diaryAdapter =
                 DiaryAdapter(
                     context = context!!,
-                    diarys = diaryList,
+                    diarys = it,
                     onDiaryListener = this
                 )
 
-            diaryAdapter.notifyDataSetChanged()
             binding.root.rlv_diary.adapter = diaryAdapter
             binding.root.rlv_diary.layoutManager = LinearLayoutManager(container!!.context)
+            diaryAdapter.notifyDataSetChanged()
             binding.root.rlv_diary.setHasFixedSize(true)
         })
 
@@ -68,11 +68,5 @@ import java.util.*
          val dialog = DetailDialog(context!!, diaryList[position])
          Log.d("Data", diaryList[position].content)
          dialog.show()
-     }
-
-     override fun onDestroy() {
-         AppDatabase.destroyInstance()
-         thread.interrupt()
-         super.onDestroy()
      }
 }

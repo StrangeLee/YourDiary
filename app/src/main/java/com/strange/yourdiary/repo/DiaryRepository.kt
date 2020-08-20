@@ -1,6 +1,7 @@
 package com.strange.yourdiary.repo
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.db.AppDatabase
@@ -13,7 +14,7 @@ class DiaryRepository(application: Application) {
     private val diaryList : LiveData<List<DiaryData>> = diaryDao.getAll()
 
     fun getAll() : LiveData<List<DiaryData>> {
-        return diaryDao.getAll()
+        return diaryList
     }
 
     fun insert(diary : DiaryData) {
@@ -21,7 +22,9 @@ class DiaryRepository(application: Application) {
             val thread = Thread(Runnable {
                 diaryDao.insert(diary) })
             thread.start()
-        } catch (e: Exception) {}
+        } catch (e: Exception) {
+            Log.e("Error", e.message)
+        }
     }
 
     fun delete(diary : DiaryData) {
