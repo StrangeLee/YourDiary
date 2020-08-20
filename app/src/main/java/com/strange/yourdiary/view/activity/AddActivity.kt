@@ -15,8 +15,10 @@ import androidx.appcompat.view.ContextThemeWrapper
 import android.text.TextUtils
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
@@ -24,9 +26,12 @@ import com.strange.yourdiary.databinding.ActivityAddBinding
 import com.strange.yourdiary.databinding.DialogDiaryDetailBinding
 import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.service.WeatherRetrofit
+import com.strange.yourdiary.viewmodel.DiaryViewModel
 import kotlinx.android.synthetic.main.activity_add.*
 import kotlinx.android.synthetic.main.activity_add.view.*
 import org.jetbrains.anko.toast
+import org.json.JSONArray
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -36,10 +41,9 @@ import java.util.*
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
+    private lateinit var diaryViewModel : DiaryViewModel
 
     private val calendar = Calendar.getInstance()
-
-    private var db : AppDatabase? = null
 
     var curDate = calendar.get(Calendar.DATE).toString()
     var curDay = calendar.get(Calendar.DAY_OF_WEEK).toString()
@@ -55,10 +59,9 @@ class AddActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add)
-        setSupportActionBar(toolbar_add)
+        diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
-        // db instance 생성 및 insert
-        db = AppDatabase.getInstance(this)
+        setSupportActionBar(toolbar_add)
 
         binding.root.tv_add_date.text = SimpleDateFormat("yyyy년 MM월 dd일 E").format(calendar.time).toString()
 
@@ -66,7 +69,6 @@ class AddActivity : AppCompatActivity() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
-    // 2020/08/11 Todo : finish write diary's content
     fun beforeSaveDiary(view : View) {
         val diaryTitle = edit_add_title.text
         val diaryContent = edit_add_content.text
@@ -84,6 +86,8 @@ class AddActivity : AppCompatActivity() {
             R.style.Theme_AppCompat_Dialog
         ))
 
+        getCurrentLocation()
+
         if (message == getString(R.string.add_diary_null_exception)) {
             builder.run {
                 setTitle("일기 저장")
@@ -96,9 +100,7 @@ class AddActivity : AppCompatActivity() {
                 setTitle("일기 저장")
                     .setMessage(message)
                     .setPositiveButton("확인") { _, _ ->
-
-                        val thread = Thread(saveDiary())
-                        thread.start()
+                        saveDiary()
 
                         val intent = Intent(this@AddActivity, MainActivity::class.java)
                         startActivity(intent)
@@ -113,21 +115,15 @@ class AddActivity : AppCompatActivity() {
     }
 
     // room db 에 Diary 객체 저장
-    private fun saveDiary() : Runnable {
-        getCurrentLocation()
-
-        return Runnable {
-            val diary = DiaryData(
-                id = 0,
-                title = edit_add_title.text.toString(),
-                content = edit_add_content.text.toString(),
-                weather = "맑음",
-                location = nowLocationString,
-                uploadDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.time)
-            )
-
-            db?.diaryDao()?.insert(diary)
-        }
+    private fun saveDiary() {
+        diaryViewModel.insert(DiaryData(
+            id = 0,
+            title = edit_add_title.text.toString(),
+            content = edit_add_content.text.toString(),
+            weather = "맑음",
+            location = nowLocationString,
+            uploadDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.time)
+        ))
     }
 
     // 현재위치 가져오기
@@ -175,10 +171,10 @@ class AddActivity : AppCompatActivity() {
                 getWeatherFromApi()
             }
             .addOnFailureListener {exception: Exception ->
-                exception.printStackTrace()
                 // 2020/08/11 Todo : 오류 발생시 다이얼로그 뛰우기 or toast
                 nowLocationString = "주소를 가져오지 못했습니다."
                 Log.e("Error", exception.message)
+                exception.printStackTrace()
             }
 
     }
@@ -197,9 +193,16 @@ class AddActivity : AppCompatActivity() {
 
             override fun onResponse(call: Call<JsonObject>, response: Response<JsonObject>) {
                 Log.d("Weather", response.body().toString())
-                toast(response.body().toString())
-            }
+                val jsonObject = JSONObject(response.body().toString())
+                val jsonArray = jsonObject.getJSONArray("weather")
 
+                // 2020-08-20 TODO : data 변환 한 것을 혁싱게 맞춰서 diaryViewModel.insert() 안에 넣기
+                for (i in 0 until jsonArray.length()) {
+                    val obj = jsonArray.getJSONObject(i)
+                    Log.d("Weather", obj.getString("main"))
+                    Log.d("Weather", obj.getString("description"))
+                }
+            }
         })
     }
 
