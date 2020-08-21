@@ -33,7 +33,6 @@ import java.util.*
      private var diaryList = listOf<DiaryData>()
      lateinit var diaryAdapter : DiaryAdapter
      var cal = Calendar.getInstance()
-     lateinit var thread : Thread
 
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +46,7 @@ import java.util.*
         diaryViewModel = ViewModelProviders.of(this).get(DiaryViewModel::class.java)
 
         diaryViewModel.getAll().observe(this, Observer {
+            diaryList = it
             diaryAdapter =
                 DiaryAdapter(
                     context = context!!,
@@ -65,6 +65,7 @@ import java.util.*
 
      // DiaryAdapter 의 OnDiaryClick 의 override 함수를
      override fun onDiaryClick(position: Int) {
+         Log.d("Position", "position $position")
          val dialog = DetailDialog(context!!, diaryList[position])
          Log.d("Data", diaryList[position].content)
          dialog.show()

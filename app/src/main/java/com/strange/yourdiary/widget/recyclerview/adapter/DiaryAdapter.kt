@@ -12,7 +12,7 @@ import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
 import kotlinx.android.synthetic.main.rlv_diary_list.view.*
 
 class DiaryAdapter(val context : Context, val diarys : List<DiaryData>, val onDiaryListener: OnDiaryListener) :
-    androidx.recyclerview.widget.RecyclerView.Adapter<DiaryViewHolder>() {
+    RecyclerView.Adapter<DiaryViewHolder>() {
 
     private var mOnDiaryListener : OnDiaryListener = onDiaryListener
 

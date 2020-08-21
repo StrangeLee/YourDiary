@@ -6,7 +6,7 @@ import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
 import kotlinx.android.synthetic.main.rlv_diary_list.view.*
 
-class DiaryViewHolder(view: View?) : androidx.recyclerview.widget.RecyclerView.ViewHolder(view!!), View.OnClickListener {
+class DiaryViewHolder(view: View?) : RecyclerView.ViewHolder(view!!), View.OnClickListener {
 
     private var tvDate = itemView.tv_diary_date
     private var tvDay = itemView.tv_diary_day
@@ -26,7 +26,9 @@ class DiaryViewHolder(view: View?) : androidx.recyclerview.widget.RecyclerView.V
     }
 
     override fun onClick(v: View?) {
-        onDiaryListener.onDiaryClick(adapterPosition)
+        if (adapterPosition != RecyclerView.NO_POSITION) {
+            onDiaryListener.onDiaryClick(adapterPosition)
+        }
     }
 
     private fun getMonth(month : Int) : String {
