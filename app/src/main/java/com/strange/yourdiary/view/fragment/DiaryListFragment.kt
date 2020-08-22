@@ -1,5 +1,6 @@
  package com.strange.yourdiary.view.fragment
 
+import android.graphics.Point
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.databinding.DataBindingUtil
@@ -10,6 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.lifecycle.ViewModelProvider
 
 import com.strange.yourdiary.R
@@ -69,5 +71,18 @@ import java.util.*
          val dialog = DetailDialog(context!!, diaryList[position])
          Log.d("Data", diaryList[position].content)
          dialog.show()
+
+         // custom dialog size 지정
+         val display = activity!!.windowManager.defaultDisplay
+         val size = Point()
+
+         display.getSize(size)
+
+         val window = dialog.window
+
+         val x : Int = (size.x * 0.8f).toInt()
+         val y : Int = (size.y * 0.7f).toInt()
+
+         window.setLayout(x, y)
      }
 }
