@@ -36,6 +36,8 @@ import java.util.*
      lateinit var diaryAdapter : DiaryAdapter
      var cal = Calendar.getInstance()
 
+//     lateinit var dialog : DetailDialog
+     
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -80,9 +82,9 @@ import java.util.*
 
          val window = dialog.window
 
-         val x : Int = (size.x * 0.8f).toInt()
-         val y : Int = (size.y * 0.7f).toInt()
+         val width : Int = (size.x * 0.85f).toInt()
+         val height : Int = (size.y * 0.75f).toInt()
 
-         window.setLayout(x, y)
+         window.setLayout(width, height)
      }
-}
+ }
