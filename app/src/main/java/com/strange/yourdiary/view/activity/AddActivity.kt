@@ -1,12 +1,14 @@
 package com.strange.yourdiary.view.activity
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import androidx.databinding.DataBindingUtil
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
@@ -38,6 +40,7 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
+// 2020-08-24 Todo : code 정리하기
 class AddActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinding
@@ -52,8 +55,10 @@ class AddActivity : AppCompatActivity() {
     // gps variable
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var geoCoder : Geocoder
+    private lateinit var locationManager : LocationManager
 
     private lateinit var nowLocationString: String
+    private lateinit var nowWeatherString: String
     private lateinit var mLocation : Location
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,10 +70,10 @@ class AddActivity : AppCompatActivity() {
 
         binding.root.tv_add_date.text = SimpleDateFormat("yyyy년 MM월 dd일 E").format(calendar.time).toString()
 
-        // get gps location
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        checkGpsEnabled()
     }
 
+    // 예외처리 dialog
     fun beforeSaveDiary(view : View) {
         val diaryTitle = edit_add_title.text
         val diaryContent = edit_add_content.text
@@ -85,8 +90,6 @@ class AddActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(ContextThemeWrapper(this,
             R.style.Theme_AppCompat_Dialog
         ))
-
-        getCurrentLocation()
 
         if (message == getString(R.string.add_diary_null_exception)) {
             builder.run {
@@ -120,7 +123,7 @@ class AddActivity : AppCompatActivity() {
             id = 0,
             title = edit_add_title.text.toString(),
             content = edit_add_content.text.toString(),
-            weather = "맑음",
+            weather = nowWeatherString,
             location = nowLocationString,
             uploadDate = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(calendar.time)
         ))
@@ -163,7 +166,7 @@ class AddActivity : AppCompatActivity() {
                     }
                     mAddress.append("\n")
 
-                    nowLocationString = "${addr.countryName}  ${addr.adminArea} ${addr.thoroughfare}"
+                    nowLocationString = "${addr.adminArea} ${addr.thoroughfare}"
 
                     Log.d("Test", addr.toString())
                 }
@@ -176,7 +179,6 @@ class AddActivity : AppCompatActivity() {
                 Log.e("Error", exception.message)
                 exception.printStackTrace()
             }
-
     }
 
     private fun getWeatherFromApi() {
@@ -196,14 +198,53 @@ class AddActivity : AppCompatActivity() {
                 val jsonObject = JSONObject(response.body().toString())
                 val jsonArray = jsonObject.getJSONArray("weather")
 
-                // 2020-08-20 TODO : data 변환 한 것을 혁싱게 맞춰서 diaryViewModel.insert() 안에 넣기
-                for (i in 0 until jsonArray.length()) {
-                    val obj = jsonArray.getJSONObject(i)
-                    Log.d("Weather", obj.getString("main"))
-                    Log.d("Weather", obj.getString("description"))
-                }
+                val mainInfo = jsonObject.getJSONObject("main")
+                Log.d("Weather", (mainInfo.getString("temp").toFloat() - 273).toInt().toString())
+                nowWeatherString = (mainInfo.getString("temp").toFloat() - 273).toInt().toString() + "º, "
+
+//                for (i in 0 until jsonArray.length()) {
+//                    val obj = jsonArray.getJSONObject(i)
+//                    Log.d("Weather", obj.getString("main"))
+//                    Log.d("Weather", obj.getString("description"))
+//                    nowWeatherString = getWeatherToString(obj.getString("main"))
+//                }
             }
         })
+    }
+
+    private fun getWeatherToString(weather : String) : String {
+        return when (weather) {
+            "Clear" -> "맑음"
+            "Clouds" -> "구름 조금"
+            "Drizzle" -> "이슬비"
+            "Rain" -> "비"
+            "Thunderstorm" -> "번개"
+            "Snow" -> "눈"
+            "Mist" -> "안개"
+            "Smoke" -> "안개"
+            "Fog" -> "안개"
+            "Haze" -> "실안개"
+            "Tornado" -> "태풍"
+            "Squall" -> "돌풍"
+            "Ash" -> "화산재"
+            "Dust" -> "황사"
+            "Sand" -> "황사"
+            else -> "맑음"
+        }
+    }
+
+    private fun checkGpsEnabled() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            toast("날씨를 불러오기 위해서 GPS를 켜주셔야합니다.")
+            val intent = Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
+        } else {
+            // get gps location
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+            getCurrentLocation()
+
+        }
     }
 
     override fun onDestroy() {

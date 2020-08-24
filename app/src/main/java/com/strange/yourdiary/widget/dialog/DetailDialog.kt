@@ -54,6 +54,7 @@ class DetailDialog(context: Context, private val diary: DiaryData) : Dialog(cont
 
         binding.root.tv_dialog_title.text = diary.title
         binding.root.tv_dialog_content.text = diary.content
+        binding.root.tv_dialog_weather.text = diary.weather
         binding.root.tv_dialog_location.text = location
         binding.root.tv_dialog_month.text = SimpleDateFormat("MMMM").format(transDate)
         binding.root.tv_dialog_day.text = SimpleDateFormat("EEEE").format(transDate)
