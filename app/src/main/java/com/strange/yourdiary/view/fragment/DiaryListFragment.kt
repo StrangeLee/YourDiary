@@ -11,33 +11,31 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.lifecycle.ViewModelProvider
+
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.databinding.FragmentDiaryListBinding
-import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.viewmodel.DiaryViewModel
 import com.strange.yourdiary.widget.dialog.DetailDialog
 import com.strange.yourdiary.widget.recyclerview.adapter.DiaryAdapter
 import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
 import kotlinx.android.synthetic.main.fragment_diary_list.view.*
-import java.lang.Exception
 import java.text.SimpleDateFormat
+
 import java.util.*
 
- class DiaryListFragment : androidx.fragment.app.Fragment(), OnDiaryListener {
+ class DiaryListFragment : Fragment(), OnDiaryListener {
 
      private lateinit var binding : FragmentDiaryListBinding
      private lateinit var diaryViewModel : DiaryViewModel
 
      private var diaryList = listOf<DiaryData>()
      lateinit var diaryAdapter : DiaryAdapter
-     var cal = Calendar.getInstance()
+     var now = Calendar.getInstance()
 
 //     lateinit var dialog : DetailDialog
-     
+
      override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -63,6 +61,8 @@ import java.util.*
             diaryAdapter.notifyDataSetChanged()
             binding.root.rlv_diary.setHasFixedSize(true)
         })
+
+        binding.root.tv_diary_month.text = SimpleDateFormat("MMM.").format(now.time)
 
         return binding.root
     }
