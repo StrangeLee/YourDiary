@@ -48,10 +48,6 @@ class AddActivity : AppCompatActivity() {
 
     private val calendar = Calendar.getInstance()
 
-    var curDate = calendar.get(Calendar.DATE).toString()
-    var curDay = calendar.get(Calendar.DAY_OF_WEEK).toString()
-    var curTime = SimpleDateFormat("HH:mm").format(calendar.time)
-
     // gps variable
     private lateinit var fusedLocationClient : FusedLocationProviderClient
     private lateinit var geoCoder : Geocoder
@@ -212,27 +208,6 @@ class AddActivity : AppCompatActivity() {
         })
     }
 
-    private fun getWeatherToString(weather : String) : String {
-        return when (weather) {
-            "Clear" -> "맑음"
-            "Clouds" -> "구름 조금"
-            "Drizzle" -> "이슬비"
-            "Rain" -> "비"
-            "Thunderstorm" -> "번개"
-            "Snow" -> "눈"
-            "Mist" -> "안개"
-            "Smoke" -> "안개"
-            "Fog" -> "안개"
-            "Haze" -> "실안개"
-            "Tornado" -> "태풍"
-            "Squall" -> "돌풍"
-            "Ash" -> "화산재"
-            "Dust" -> "황사"
-            "Sand" -> "황사"
-            else -> "맑음"
-        }
-    }
-
     private fun checkGpsEnabled() {
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -243,7 +218,6 @@ class AddActivity : AppCompatActivity() {
             // get gps location
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
             getCurrentLocation()
-
         }
     }
 
