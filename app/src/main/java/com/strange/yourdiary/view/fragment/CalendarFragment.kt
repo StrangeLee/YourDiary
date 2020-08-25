@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.util.Log
 import android.view.*
+import androidx.databinding.DataBindingUtil
 
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.TodoData
+import com.strange.yourdiary.databinding.FragmentCalendarBinding
 import com.strange.yourdiary.db.AppDatabase
 import com.strange.yourdiary.event.CalenderSwipeEvent
 import com.strange.yourdiary.widget.dialog.AddTodoDialog
@@ -15,13 +17,18 @@ import kotlinx.android.synthetic.main.fragment_calendar.view.*
 import kotlinx.android.synthetic.main.fragment_calendar.view.tv_todo_edit
 
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class CalendarFragment : androidx.fragment.app.Fragment() {
+class CalendarFragment : Fragment() {
 
+    lateinit var binding: FragmentCalendarBinding
     lateinit var todoAdapter: TodoAdapter
-    private var db : AppDatabase? = null
     lateinit var todoList : List<TodoData>
+
+    private var db : AppDatabase? = null
+    private val cal = Calendar.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +38,11 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_calendar, container, false)
         db = AppDatabase.getInstance(context!!)
 
-        var view : View = inflater.inflate(R.layout.fragment_calendar, container, false)
-
         // calendar view swipe event
-        view.calendar_box.setOnTouchListener(object : CalenderSwipeEvent(context!!){
+        binding.root.calendar_box.setOnTouchListener(object : CalenderSwipeEvent(context!!){
             override fun onSwipeRight() {
                 super.onSwipeRight()
             }
@@ -46,10 +52,14 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
             }
         })
 
+        binding.root.tv_calendar_month.text = SimpleDateFormat("MMMM").format(cal.time)
+        binding.root.tv_calendar_date.text = SimpleDateFormat("dd").format(cal.time)
+        binding.root.tv_calendar_day.text = SimpleDateFormat("EEEE").format(cal.time)
+
         // To do list 세팅
         val runnable = Runnable {
             try {
-                todoList = db?.todoDao()?.getTodoByDate("2020-07-01")!!
+                todoList = db?.todoDao()?.getTodoByDate(SimpleDateFormat("yyyy-MM-dd").format(cal.time))!!
                 // adapter setting
                 todoAdapter =
                     TodoAdapter(
@@ -60,7 +70,7 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
                         todoAdapter.addItem(it)
                         Log.i("TODO", "all " + it.title + " ${it.date}")
                     }
-                    view.lv_todo.adapter = todoAdapter // adapter setting
+                    binding.root.lv_todo.adapter = todoAdapter // adapter setting
                     Log.d("TODO", "Adapter Count ${todoAdapter.count}")
                 }
             } catch (e : Exception) {
@@ -96,12 +106,12 @@ class CalendarFragment : androidx.fragment.app.Fragment() {
 //        view.lv_todo.adapter = todoAdapter // adapter setting
 
 
-        view.tv_todo_edit.setOnClickListener {
+        binding.root.tv_todo_edit.setOnClickListener {
             val dialog = AddTodoDialog(context!!)
             dialog.show()
         }
 
-        return view
+        return binding.root
     }
 
     override fun onDestroy() {

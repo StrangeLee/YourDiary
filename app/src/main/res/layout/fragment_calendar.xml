@@ -1,145 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.fragment.CalendarFragment">
+        xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorWhite">
+            tools:context=".view.fragment.CalendarFragment">
 
-        <LinearLayout
-                android:id="@+id/calendar_box"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:background="@color/colorLightSkyBlue"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingBottom="15dp"
-                app:layout_constraintBottom_toTopOf="@+id/guideline"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                    android:id="@+id/tv_calendar_month"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorLightGrey"
-                    android:fontFamily="@font/binggrae_bold"
-                    android:gravity="center"
-                    android:text="Month"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="25sp"
-                    app:layout_constraintBottom_toTopOf="@+id/tv_calendar_date"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                    android:id="@+id/tv_calendar_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/binggrae"
-                    android:text="12"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="60sp"
-                    android:padding="20dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/guideline" />
-
-            <TextView
-                    android:id="@+id/tv_calendar_day"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/binggrae"
-                    android:paddingBottom="20dp"
-                    android:text="Monday"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="30sp"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_calendar_date"
-                    app:layout_constraintStart_toStartOf="@+id/tv_calendar_date"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_calendar_date" />
-
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintGuide_begin="277dp" />
-
-        <View
-                android:id="@+id/view2"
+        <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/colorDeepBlue"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/guideline"
-                app:layout_constraintVertical_bias="0.039" />
-
-        <ScrollView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view2">
+                android:layout_height="match_parent"
+                android:background="@color/colorWhite">
 
             <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/calendar_box"
+                    android:layout_width="250dp"
                     android:layout_height="wrap_content"
+                    android:background="@color/colorLightSkyBlue"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp"
+                    app:layout_constraintBottom_toTopOf="@+id/guideline"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <RelativeLayout
+                <TextView
+                        android:id="@+id/tv_calendar_month"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:background="@color/colorLightGrey"
+                        android:fontFamily="@font/binggrae_bold"
+                        android:gravity="center"
+                        android:text="Month"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="25sp"
+                        app:layout_constraintBottom_toTopOf="@+id/tv_calendar_date"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                            android:id="@+id/tv_todo1"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_centerVertical="true"
-                            android:layout_centerHorizontal="true"
-                            android:fontFamily="@font/binggrae_melona_bold"
-                            android:padding="5dp"
-                            android:text="Todo List"
-                            android:textSize="20sp" />
+                <TextView
+                        android:id="@+id/tv_calendar_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/binggrae"
+                        android:text="12"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="60sp"
+                        android:padding="20dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/guideline" />
 
-                    <TextView
-                            android:id="@+id/tv_todo_edit"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:background="@color/colorWhite"
-                            android:fontFamily="@font/binggrae_melona_bold"
-                            android:contextClickable="true"
-                            android:layout_marginRight="10dp"
-                            android:padding="5dp"
-                            android:text="+"
-                            android:textStyle="bold"
-                            android:textSize="20sp" />
-
-                </RelativeLayout>
-
-                <ListView
-                        android:id="@+id/lv_todo"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                <TextView
+                        android:id="@+id/tv_calendar_day"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="@font/binggrae"
+                        android:paddingBottom="20dp"
+                        android:text="Monday"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="30sp"
+                        app:layout_constraintEnd_toEndOf="@+id/tv_calendar_date"
+                        app:layout_constraintStart_toStartOf="@+id/tv_calendar_date"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_calendar_date" />
 
             </LinearLayout>
 
-        </ScrollView>
+            <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_begin="277dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <View
+                    android:id="@+id/view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorDeepBlue"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline"
+                    app:layout_constraintVertical_bias="0.039" />
 
-</FrameLayout>
+            <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view2">
+
+                <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                    <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                        <TextView
+                                android:id="@+id/tv_todo1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_centerHorizontal="true"
+                                android:fontFamily="@font/binggrae_melona_bold"
+                                android:padding="5dp"
+                                android:text="Todo List"
+                                android:textSize="20sp" />
+
+                        <TextView
+                                android:id="@+id/tv_todo_edit"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:background="@color/colorWhite"
+                                android:fontFamily="@font/binggrae_melona_bold"
+                                android:contextClickable="true"
+                                android:layout_marginRight="10dp"
+                                android:padding="5dp"
+                                android:text="+"
+                                android:textStyle="bold"
+                                android:textSize="20sp" />
+
+                    </RelativeLayout>
+
+                    <ListView
+                            android:id="@+id/lv_todo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+            </ScrollView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
+
+</layout>
