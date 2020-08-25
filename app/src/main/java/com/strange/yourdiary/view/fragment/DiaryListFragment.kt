@@ -1,6 +1,5 @@
  package com.strange.yourdiary.view.fragment
 
-import android.content.Intent
 import android.graphics.Point
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -17,13 +16,11 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.strange.yourdiary.R
 import com.strange.yourdiary.data.DiaryData
 import com.strange.yourdiary.databinding.FragmentDiaryListBinding
-import com.strange.yourdiary.view.activity.MainActivity
 import com.strange.yourdiary.viewmodel.DiaryViewModel
 import com.strange.yourdiary.widget.dialog.DetailDialog
 import com.strange.yourdiary.widget.recyclerview.adapter.DiaryAdapter
 import com.strange.yourdiary.widget.recyclerview.listener.OnDiaryListener
 import kotlinx.android.synthetic.main.fragment_diary_list.view.*
-import org.jetbrains.anko.support.v4.longToast
 import org.jetbrains.anko.support.v4.toast
 import java.text.SimpleDateFormat
 

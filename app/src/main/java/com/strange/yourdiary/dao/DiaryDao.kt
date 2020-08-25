@@ -7,7 +7,7 @@ import com.strange.yourdiary.data.DiaryData
 @Dao
 interface DiaryDao {
 
-    @Query("SELECT * FROM diary")
+    @Query("SELECT * FROM diary ORDER BY updateDate DESC")
     fun getAll() : LiveData<List<DiaryData>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -18,4 +18,5 @@ interface DiaryDao {
 
     @Delete
     fun deleteById(vararg diary : DiaryData)
+
 }
