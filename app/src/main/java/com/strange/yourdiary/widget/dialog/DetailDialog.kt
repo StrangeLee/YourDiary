@@ -46,18 +46,21 @@ class DetailDialog(context: Context, private val diary: DiaryData) : Dialog(cont
         val time = diary.uploadDate.substring(11)
 
         Log.d("Data", "location length ${diary.location.length}")
+        Log.d("Data", "before set location ${diary.location}")
         val location = if (diary.location.length > 15) {
-            diary.location.substring(15) + "..."
+            diary.location.substring(0, 15) + "..."
         } else {
             diary.location
         }
+
+        Log.d("Data", "after set location $location")
 
         binding.root.tv_dialog_title.text = diary.title
         binding.root.tv_dialog_content.text = diary.content
         binding.root.tv_dialog_weather.text = diary.weather
         binding.root.tv_dialog_location.text = location
         binding.root.tv_dialog_month.text = SimpleDateFormat("MMMM").format(transDate)
-        binding.root.tv_dialog_day.text = SimpleDateFormat("EEEE").format(transDate)
+        binding.root.tv_dialog_day.text = SimpleDateFormat("EEEE").format(transDate) + ", "
         binding.root.tv_dialog_date.text = SimpleDateFormat("dd").format(transDate)
         binding.root.tv_dialog_time.text = time
     }
